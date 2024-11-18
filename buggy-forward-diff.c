@@ -28,9 +28,12 @@ void diff(double* u, int N, double dx, double* du) {
   //}
   //du[N-1] = (u[N-1]-u[N-2])/dx;
 
+du[0] = (u[1] - u[0])/(dx);
   for (int i =0; i<=N; ++i){
-    du[i] = (u[i] - u[i-1])/dx;
+    du[i] = (u[i] - u[i-1])/(2*dx);
   }
+
+  du[N] = (u[N] - u[N-1]) /(dx);
   
 }
 
@@ -71,6 +74,7 @@ int N = atoi(argv[1]);
 
 double* u = (double*)malloc((N+1)*sizeof(double));
 double* du = (double*)malloc((N+1)*sizeof(double));
+double* exdu = (double*)malloc((N+1)*sizeof(double));
 double dx = M_PI/N;
 
 init(u, N, dx);  
@@ -79,6 +83,9 @@ init(u, N, dx);
 diff(u, N, dx, du);
 for (int i=0; i<N;++i)
     printf("diff = %f - %f = %f \n",cos(i*dx), du[i], cos(i*dx)-du[i]);           // here is the bugg 
+    //exdu[i] = cos(i*dx) - du[i];
+
+
 free(u);
 free(du);
 
